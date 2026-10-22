@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edbert Halim | Full-Stack Developer</title>
+  <meta name="description" content="Portfolio of Edbert Halim, Informatics Engineering student at Universitas Tarumanagara and Full-Stack Developer." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+      <div class="panel">
+        <a href="#" class="logo" data-view="home"><i class="ti ti-vinyl"></i> EDBERTIFY</a>
+        <nav class="nav">
+          <a href="#" class="active" data-view="home"><i class="ti ti-home"></i> Home</a>
+          <a href="#" data-view="projects"><i class="ti ti-disc"></i> Projects</a>
+          <a href="#" data-view="certificates"><i class="ti ti-certificate"></i> Certificates</a>
+          <a href="#" data-view="journey"><i class="ti ti-list-details"></i> Journey</a>
+          <a href="#" data-view="contact"><i class="ti ti-mail"></i> Contact</a>
+        </nav>
+      </div>
+
+      <div class="panel library">
+        <p class="library-title"><i class="ti ti-books"></i> My skill playlists</p>
+        <div id="sidebarPlaylists"></div>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN ===== -->
+    <main class="main" id="main">
+
+      <!-- ========== HOME ========== -->
+      <section class="view active" data-view="home">
+
+        <!-- Artist header -->
+        <header class="artist-header">
+          <div class="avatar">
+            <img src="img/profile.jpg" alt="Edbert Halim" onerror="this.remove()" />
+            <span>EH</span>
+          </div>
+          <div class="artist-info">
+            <p class="verified"><i class="ti ti-rosette-discount-check"></i> Verified developer</p>
+            <h1>Edbert Halim</h1>
+            <p class="artist-meta">Informatics Engineering Student · Jakarta, Indonesia · <span class="green">Open to internship</span></p>
+          </div>
+        </header>
+
+        <div class="content">
+          <!-- Action row -->
+          <div class="actions">
+            <button class="play-big" id="playBig" aria-label="Play"><i class="ti ti-player-play"></i></button>
+            <a class="pill" href="mailto:ed79bert@gmail.com"><i class="ti ti-briefcase"></i> Hire me</a>
+            <a class="pill" href="cv/edbert-halim-cv.pdf" download><i class="ti ti-download"></i> Download CV</a>
+          </div>
+
+          <!-- Popular = project tracklist -->
+          <h2 class="section-title">Popular releases</h2>
+          <div class="tracklist" id="tracklist"></div>
+
+          <!-- Discography -->
+          <div class="section-head">
+            <h2 class="section-title">Discography</h2>
+            <a href="#" class="show-all" data-view="projects">Show all</a>
+          </div>
+          <div class="grid" id="discography"></div>
+
+          <!-- Skill playlists -->
+          <h2 class="section-title">Skill playlists</h2>
+          <div class="grid" id="playlists"></div>
+
+          <!-- About the artist -->
+          <h2 class="section-title">About the artist</h2>
+          <div class="about-card">
+            <div class="about-stats">
+              <div><span class="num">3.74<small>/4.00</small></span><span>GPA</span></div>
+              <div><span class="num">5</span><span>projects shipped</span></div>
+              <div><span class="num">7</span><span>certifications</span></div>
+              <div><span class="num">1</span><span>journal publication</span></div>
+              <div><span class="num">2028</span><span>graduation target</span></div>
+            </div>
+            <p class="about-text">
+              I'm an Informatics Engineering student at Universitas Tarumanagara and a Full-Stack Developer who loves
+              turning ideas into real, production-ready apps with JavaScript, TypeScript, Next.js, Laravel, and Flutter.
+              I'm always eager to learn new technologies and take on new challenges.
+            </p>
+            <div class="socials">
+              <a href="https://github.com/edbert19" target="_blank" aria-label="GitHub"><i class="ti ti-brand-github"></i></a>
+              <a href="https://www.linkedin.com/in/edbert-halim-62ab43438/" target="_blank" aria-label="LinkedIn"><i class="ti ti-brand-linkedin"></i></a>
+              <a href="https://www.instagram.com/edbert19/" target="_blank" aria-label="Instagram"><i class="ti ti-brand-instagram"></i></a>
+              <a href="https://www.tiktok.com/@edbertaja" target="_blank" aria-label="TikTok"><i class="ti ti-brand-tiktok"></i></a>
+              <a href="mailto:ed79bert@gmail.com" aria-label="Email"><i class="ti ti-mail"></i></a>
+            </div>
+          </div>
+
+          <footer class="footer">© 2026 Edbert Halim · Built with HTML, CSS &amp; JavaScript</footer>
+        </div>
+      </section>
+
+      <!-- ========== PROJECTS ========== -->
+      <section class="view" data-view="projects">
+        <div class="content">
+          <h1 class="page-title">Projects</h1>
+          <p class="page-sub">Things I've built, from web platforms to mobile apps. Click one to see the details.</p>
+
+          <h2 class="section-title">Public playlists</h2>
+          <div class="grid" id="projectGrid"></div>
+        </div>
+      </section>
+
+      <!-- ========== DETAIL PROJECT (diisi otomatis oleh script.js) ========== -->
+      <section class="view" data-view="project" id="projectDetail"></section>
+
+      <!-- ========== DETAIL PLAYLIST SKILL (diisi otomatis oleh script.js) ========== -->
+      <section class="view" data-view="playlist" id="playlistDetail"></section>
+      <!-- ========== CERTIFICATES ========== -->
+      <section class="view" data-view="certificates">
+        <div class="content">
+          <h1 class="page-title">Certificates</h1>
+          <p class="page-sub">Courses and certifications I've completed. Click one to see the full certificate.</p>
+
+          <h2 class="section-title">Public playlists</h2>
+          <div class="grid" id="certGrid"></div>
+        </div>
+      </section>
+
+      <!-- ========== JOURNEY (nanti diisi) ========== -->
+      <section class="view" data-view="journey"><div class="content placeholder"><h1>Journey</h1><p>Coming soon.</p></div></section>
+
+      <!-- ========== CONTACT ========== -->
+      <section class="view" data-view="contact">
+        <div class="content">
+          <h1 class="page-title">Let's connect</h1>
+          <p class="page-sub">Got a project, an internship, or just want to say hi? Pick your favorite app.</p>
+
+          <h2 class="section-title">Recently played apps</h2>
+          <div class="artist-grid">
+
+            <a class="artist" href="https://www.linkedin.com/in/edbert-halim-62ab43438/" target="_blank">
+              <div class="artist-img" style="background:#0A66C2">
+                <i class="ti ti-brand-linkedin"></i>
+                <span class="card-play"><i class="ti ti-arrow-up-right"></i></span>
+              </div>
+              <p class="artist-name">LinkedIn</p>
+              <p class="artist-sub">Edbert Halim</p>
+            </a>
+
+            <a class="artist" href="https://github.com/edbert19" target="_blank">
+              <div class="artist-img" style="background:#24292f">
+                <i class="ti ti-brand-github"></i>
+                <span class="card-play"><i class="ti ti-arrow-up-right"></i></span>
+              </div>
+              <p class="artist-name">GitHub</p>
+              <p class="artist-sub">@edbert19</p>
+            </a>
+
+            <a class="artist" href="mailto:ed79bert@gmail.com">
+              <div class="artist-img" style="background:#EA4335">
+                <i class="ti ti-mail"></i>
+                <span class="card-play"><i class="ti ti-arrow-up-right"></i></span>
+              </div>
+              <p class="artist-name">Gmail</p>
+              <p class="artist-sub">ed79bert@gmail.com</p>
+            </a>
+
+            <a class="artist" href="https://wa.me/628118708668" target="_blank">
+              <div class="artist-img" style="background:#25D366">
+                <i class="ti ti-brand-whatsapp"></i>
+                <span class="card-play"><i class="ti ti-arrow-up-right"></i></span>
+              </div>
+              <p class="artist-name">WhatsApp</p>
+              <p class="artist-sub">Chat with me</p>
+            </a>
+
+            <a class="artist" href="https://www.instagram.com/edbert19/" target="_blank">
+              <div class="artist-img" style="background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5)">
+                <i class="ti ti-brand-instagram"></i>
+                <span class="card-play"><i class="ti ti-arrow-up-right"></i></span>
+              </div>
+              <p class="artist-name">Instagram</p>
+              <p class="artist-sub">@edbert19</p>
+            </a>
+
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===== NOW PLAYING BAR ===== -->
+    <footer class="player">
+      <div class="np-left">
+        <div class="np-cover" id="npCover"><i class="ti ti-code"></i></div>
+        <div class="np-text">
+          <p class="np-title" id="npTitle">CBT Akademis AI</p>
+          <p class="np-artist">Edbert Halim</p>
+        </div>
+      </div>
+
+      <div class="np-center">
+        <div class="controls">
+          <button id="prevBtn" aria-label="Previous"><i class="ti ti-player-skip-back"></i></button>
+          <button class="play-small" id="playBtn" aria-label="Play"><i class="ti ti-player-play"></i></button>
+          <button id="nextBtn" aria-label="Next"><i class="ti ti-player-skip-forward"></i></button>
+        </div>
+        <div class="progress-row">
+          <span id="timeNow">0:00</span>
+          <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+          <span id="timeEnd">3:00</span>
+        </div>
+      </div>
+
+      <div class="np-right">
+        <span class="status"><span class="dot"></span> Open to work</span>
+      </div>
+    </footer>
+
+    <!-- ===== MOBILE NAV ===== -->
+    <nav class="mobile-nav">
+      <a href="#" class="active" data-view="home"><i class="ti ti-home"></i><span>Home</span></a>
+      <a href="#" data-view="projects"><i class="ti ti-disc"></i><span>Projects</span></a>
+      <a href="#" data-view="certificates"><i class="ti ti-certificate"></i><span>Certs</span></a>
+      <a href="#" data-view="journey"><i class="ti ti-list-details"></i><span>Journey</span></a>
+      <a href="#" data-view="contact"><i class="ti ti-mail"></i><span>Contact</span></a>
+    </nav>
+  </div>
+
+  <!-- ===== POP-UP SERTIFIKAT ===== -->
+  <div class="modal" id="certModal" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" id="modalClose" aria-label="Close"><i class="ti ti-x"></i></button>
+      <img id="modalImg" src="" alt="" />
+      <div class="modal-info">
+        <p class="modal-issuer" id="modalIssuer"></p>
+        <h3 id="modalTitle"></h3>
+        <p class="modal-meta" id="modalMeta"></p>
+        <a class="pill modal-verify" id="modalVerify" href="#" target="_blank"><i class="ti ti-rosette-discount-check"></i> Verify credential</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== POP-UP GALERI DOKUMENTASI ===== -->
+  <div class="modal gallery-modal" id="galleryModal" aria-hidden="true">
+    <button class="g-btn g-close" id="galleryClose" aria-label="Close"><i class="ti ti-x"></i></button>
+    <button class="g-btn g-prev" id="galleryPrev" aria-label="Previous photo"><i class="ti ti-chevron-left"></i></button>
+    <figure class="g-figure">
+      <img id="galleryImg" src="" alt="" />
+      <figcaption id="galleryCount"></figcaption>
+    </figure>
+    <button class="g-btn g-next" id="galleryNext" aria-label="Next photo"><i class="ti ti-chevron-right"></i></button>
+  </div>
+
+  <script src="gallery.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
