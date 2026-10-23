@@ -4,6 +4,8 @@ const path = require("path");
 const ROOT = path.join(__dirname, "img");
 const OUTPUT = path.join(__dirname, "gallery.js");
 const IMAGE_EXT = [".jpg", ".jpeg", ".png", ".webp", ".gif"];
+// BARU: folder di dalam img/ yang bukan project (tidak masuk galeri)
+const SKIP_FOLDERS = ["certificates", "journey"];
 
 if (!fs.existsSync(ROOT)) {
   fs.mkdirSync(ROOT, { recursive: true });
@@ -16,6 +18,7 @@ let total = 0;
 
 for (const folder of fs.readdirSync(ROOT, { withFileTypes: true })) {
   if (!folder.isDirectory()) continue;
+  if (SKIP_FOLDERS.includes(folder.name.toLowerCase())) continue; // BARU: lewati folder non-project
 
   const images = fs
     .readdirSync(path.join(ROOT, folder.name))

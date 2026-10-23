@@ -398,9 +398,11 @@ document.getElementById("prevBtn").addEventListener("click", () => loadTrack(cur
 // ================= HALAMAN DETAIL PROJECT =================
 const detailEl = document.getElementById("projectDetail");
 
-function openProject(id) {
+function openProject(id, fromBack = false) {
   const i = findIndex(id);
   if (i < 0) return;
+  if (!fromBack) backStack.push(snapshot()); // ingat posisi sebelum buka project
+  currentProjectId = id;
   const p = projects[i];
   const photos = GALLERY[p.id] || [];
 
@@ -466,7 +468,7 @@ function openProject(id) {
       }
     </div>`;
 
-  document.getElementById("backBtn").addEventListener("click", () => showView("projects"));
+  document.getElementById("backBtn").addEventListener("click", () => goBack("projects"));
   detailEl.querySelector(".play-big").addEventListener("click", () => playProject(i));
   detailEl.querySelectorAll(".shot").forEach((s) =>
     s.addEventListener("click", () => openGallery(photos, Number(s.dataset.shot), p.title))
@@ -554,9 +556,11 @@ function projectsFor(skill) {
   return projects.filter((p) => p.tech.some((t) => keys.includes(t.toLowerCase())));
 }
 
-function openPlaylist(id) {
+function openPlaylist(id, fromBack = false) {
   const pl = playlists.find((x) => x.id === id);
   if (!pl) return;
+  if (!fromBack) backStack.push(snapshot()); // ingat posisi sebelum buka playlist
+  currentPlaylistId = id;
 
   const rows = pl.skills.map((sk) => ({ sk, used: projectsFor(sk) }));
   const usedProjects = new Set(rows.flatMap((r) => r.used.map((p) => p.id)));
@@ -615,7 +619,7 @@ function openPlaylist(id) {
       </div>
     </div>`;
 
-  document.getElementById("playlistBack").addEventListener("click", () => showView("home"));
+  document.getElementById("playlistBack").addEventListener("click", () => goBack("home"));
   const play = playlistEl.querySelector(".play-big");
   if (play) play.addEventListener("click", () => playProject(Number(play.dataset.play)));
   playlistEl.querySelectorAll("[data-open-project]").forEach((b) =>
@@ -649,9 +653,41 @@ function showView(name) {
 document.querySelectorAll("a[data-view]").forEach((el) =>
   el.addEventListener("click", (e) => {
     e.preventDefault();
+    backStack.length = 0; // pindah menu = mulai riwayat baru
     showView(el.dataset.view);
   })
 );
+
+// ================= TOMBOL BACK (balik ke tempat asal) =================
+// Setiap buka project / playlist, posisi sebelumnya disimpan di sini
+const backStack = [];
+let currentProjectId = null;
+let currentPlaylistId = null;
+
+function snapshot() {
+  const view = document.querySelector(".view.active")?.dataset.view || "home";
+  const scroll = document.getElementById("main").scrollTop;
+  const projectId = currentProjectId;
+  const playlistId = currentPlaylistId;
+  const wrapped = wrappedModal.classList.contains("open") ? { year: wYear, slide: wIndex } : null;
+
+  return () => {
+    if (view === "project") openProject(projectId, true);
+    else if (view === "playlist") openPlaylist(playlistId, true);
+    else showView(view);
+    document.getElementById("main").scrollTop = scroll;
+    if (wrapped) {
+      openWrapped(wrapped.year);
+      showSlide(wrapped.slide);
+    }
+  };
+}
+
+function goBack(fallbackView) {
+  const restore = backStack.pop();
+  if (restore) restore();
+  else showView(fallbackView);
+} 
 
 // ================= SERTIFIKAT =================
 // image  = foto sertifikat kamu, taruh di folder img/certificates/
@@ -772,3 +808,417 @@ document.addEventListener("keydown", (e) => {
 
 // ================= START =================
 loadTrack(0);
+
+// =====================================================
+//  JOURNEY
+//  Pakai data "projects" dan "certificates" di atas
+// =====================================================
+
+// ---------- 1. TIMELINE (urut dari yang terbaru) ----------
+// end: null = masih berjalan (muncul badge "Now playing")
+const journey = [
+  {
+    place: "Universitas Tarumanagara",
+    role: "Administrative Staff",
+    org: "University Ranking & Reputation Office",
+    start: "Mar 2026",
+    end: null,
+    icon: "ti-briefcase",
+    logo: "img/journey/untar.png",
+    color: "#1e3264",
+    details:
+      "Supporting the university's ranking and reputation work, from collecting and organising institutional data to preparing reports for national and international ranking submissions.",
+    tags: ["Data management", "Reporting", "Teamwork"],
+  },
+  {
+    place: "Universitas Tarumanagara",
+    role: "Bachelor of Informatics Engineering",
+    org: "Faculty of Information Technology · GPA 3.74 / 4.00",
+    start: "Aug 2024",
+    end: null,
+    icon: "ti-school",
+    logo: "img/journey/untar.png",
+    color: "#8d1d2c",
+    details:
+      "Studying software engineering, databases, and web and mobile development. Built 5 team projects, published a paper in the JIKSI journal, and earned Red Hat and Oracle certifications along the way. Expected to graduate in 2028.",
+    tags: ["Full-stack", "Laravel", "Next.js", "Flutter"],
+  },
+  {
+    place: "Kasih Kemuliaan School",
+    role: "Senior High School",
+    org: "SMA",
+    start: "Jul 2021",
+    end: "May 2024",
+    icon: "ti-building-community",
+    logo: "img/journey/kasih-kemuliaan.png",
+    color: "#7a4b12",
+    details: "Finished senior high school and started exploring programming before moving on to university.",
+    tags: [],
+  },
+  {
+    place: "Tunas Agung",
+    role: "Junior High School",
+    org: "SMP",
+    start: "Jul 2018",
+    end: "May 2021",
+    icon: "ti-backpack",
+    logo: "img/journey/HBTA.png",
+    color: "#285e61",
+    details: "",
+    tags: [],
+  },
+  {
+    place: "Harapan Bunda",
+    role: "Elementary School",
+    org: "SD",
+    start: "Jul 2012",
+    end: "May 2018",
+    icon: "ti-pencil",
+    logo: "img/journey/HBTA.png",
+    color: "#5b3a8c",
+    details: "",
+    tags: [],
+  },
+  {
+    place: "Metanoia",
+    role: "Playgroup – Kindergarten B",
+    org: "PG – TK B",
+    start: "Jul 2009",
+    end: "May 2012",
+    icon: "ti-mood-kid",
+    logo: "img/journey/metanoia.png",
+    color: "#a0375a",
+    details: "",
+    tags: [],
+  },
+];
+
+// ---------- 2. MOMEN PENTING (masuk ke slide Wrapped) ----------
+const milestones = [
+  { date: "Aug 2025", title: "Published in JIKSI", text: "First journal publication", icon: "ti-file-text" },
+];
+
+// ---------- 3. KARTU WRAPPED PER TAHUN ----------
+const wrappedYears = [
+  { year: 2024, title: "The Beginning", line: "Where it all started.", colors: ["#1db954", "#0b3d22"] },
+  { year: 2025, title: "The Builder", line: "The year of shipping projects.", colors: ["#7c3aed", "#1e0b47"] },
+  { year: 2026, title: "Level Up", line: "Bigger systems, real-world work.", colors: ["#f97316", "#4a1606"] },
+];
+
+// =====================================================
+//  HELPER TANGGAL
+// =====================================================
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const parseMonth = (s) => {
+  const [m, y] = s.split(" ");
+  return new Date(Number(y), MONTHS.indexOf(m.slice(0, 3)));
+};
+const yearOf = (s) => Number((String(s).match(/\d{4}/) || [])[0]);
+const startMonthOf = (p) => {
+  const m = MONTHS.indexOf(String(p.period || "").trim().slice(0, 3));
+  return m < 0 ? 0 : m;
+};
+
+function durationText(start, end) {
+  const a = parseMonth(start);
+  const b = end ? parseMonth(end) : new Date();
+  let months = (b.getFullYear() - a.getFullYear()) * 12 + (b.getMonth() - a.getMonth()) + 1;
+  const y = Math.floor(months / 12);
+  const m = months % 12;
+  const parts = [];
+  if (y) parts.push(y + (y > 1 ? " yrs" : " yr"));
+  if (m) parts.push(m + (m > 1 ? " mos" : " mo"));
+  return parts.join(" ") || "1 mo";
+}
+
+// =====================================================
+//  RENDER TIMELINE
+// =====================================================
+const eq = `<span class="eq"><i></i><i></i><i></i></span>`;
+
+document.getElementById("timeline").innerHTML = journey
+  .map((j, i) => {
+    const now = !j.end;
+    const hasMore = j.details || j.tags.length;
+    return `
+    <div class="tl-row${now ? " is-now" : ""}${hasMore ? " has-more" : ""}" data-tl="${i}" ${hasMore ? 'tabindex="0" role="button" aria-expanded="false"' : ""}>
+      <div class="tl-num">${now ? eq : i + 1}</div>
+      <div class="tl-logo" style="background:${j.color}">
+        <i class="ti ${j.icon}"></i>
+        ${j.logo ? `<img src="${j.logo}" alt="${j.place} logo" loading="lazy" onerror="this.remove()" />` : ""}
+      </div>
+      <div class="tl-main">
+        <p class="tl-place">${j.place}</p>
+        <p class="tl-role">${j.role}</p>
+        <p class="tl-org">${j.org}</p>
+        <p class="tl-when-mobile">${j.start} – ${j.end || "Now"}</p>
+      </div>
+      <div class="tl-when">
+        <span>${j.start} – ${j.end || "Now"}</span>
+        ${now ? '<span class="now-badge">Now playing</span>' : ""}
+      </div>
+      <div class="tl-dur">${durationText(j.start, j.end)}</div>
+      ${hasMore ? '<i class="ti ti-chevron-down tl-chev"></i>' : '<span></span>'}
+      ${
+        hasMore
+          ? `<div class="tl-more">
+              ${j.details ? `<p>${j.details}</p>` : ""}
+              ${j.tags.length ? `<div class="tl-tags">${j.tags.map((t) => `<span>${t}</span>`).join("")}</div>` : ""}
+            </div>`
+          : ""
+      }
+    </div>`;
+  })
+  .join("");
+
+document.querySelectorAll(".tl-row.has-more").forEach((row) => {
+  const toggle = () => {
+    const open = row.classList.toggle("open");
+    row.setAttribute("aria-expanded", open);
+  };
+  row.addEventListener("click", toggle);
+  row.addEventListener("keydown", (e) => { if (e.key === "Enter") toggle(); });
+});
+
+// =====================================================
+//  DATA WRAPPED PER TAHUN (otomatis dari projects & certificates)
+// =====================================================
+function wrappedData(year) {
+  const yProjects = projects.filter((p) => p.year === year).sort((a, b) => startMonthOf(a) - startMonthOf(b));
+  const yCerts = certificates
+    .map((c, i) => ({ ...c, index: i }))
+    .filter((c) => yearOf(c.date) === year);
+
+  const started = journey
+    .filter((j) => yearOf(j.start) === year)
+    .map((j) => ({ date: j.start, title: "Started at " + j.place, text: j.role, icon: j.icon }));
+  const finished = journey
+    .filter((j) => j.end && yearOf(j.end) === year)
+    .map((j) => ({ date: j.end, title: "Graduated from " + j.place, text: j.role, icon: "ti-confetti" }));
+  const yMilestones = [...started, ...finished, ...milestones.filter((m) => yearOf(m.date) === year)].sort(
+    (a, b) => parseMonth(a.date) - parseMonth(b.date)
+  );
+
+  const count = {};
+  yProjects.forEach((p) => p.tech.forEach((t) => (count[t] = (count[t] || 0) + 1)));
+  const topSkills = Object.entries(count).sort((a, b) => b[1] - a[1]);
+
+  return { yProjects, yCerts, yMilestones, topSkills };
+}
+
+// =====================================================
+//  KARTU WRAPPED
+// =====================================================
+const plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
+
+document.getElementById("wrappedRow").innerHTML = wrappedYears
+  .map((w, i) => {
+    const d = wrappedData(w.year);
+    return `
+    <button class="wrapped-card" data-wrapped="${i}" style="--c1:${w.colors[0]};--c2:${w.colors[1]}" aria-label="Open ${w.year} Wrapped">
+      <span class="wc-label">Edbert's Wrapped</span>
+      <span class="wc-year">${w.year}</span>
+      <span class="wc-title">${w.title}</span>
+      <span class="wc-stats">${plural(d.yProjects.length, "project")} · ${plural(d.yCerts.length, "cert")}</span>
+      <span class="wc-play"><i class="ti ti-player-play-filled"></i></span>
+    </button>`;
+  })
+  .join("");
+
+// =====================================================
+//  SLIDER WRAPPED (pop-up)
+// =====================================================
+const wrappedModal = document.getElementById("wrappedModal");
+const wrappedStage = document.getElementById("wrappedStage");
+const wrappedBars = document.getElementById("wrappedBars");
+let wSlides = [];
+let wIndex = 0;
+let wYear = 0;
+
+function buildSlides(w) {
+  const { yProjects, yCerts, yMilestones, topSkills } = wrappedData(w.year);
+  const slides = [];
+
+  // 1. Intro
+  slides.push(`
+    <div class="ws ws-intro">
+      <p class="ws-kicker">Edbert's</p>
+      <h2 class="ws-huge">${w.year}</h2>
+      <p class="ws-big">Wrapped</p>
+      <p class="ws-sub">${w.title} · ${w.line}</p>
+      <p class="ws-hint"><i class="ti ti-hand-finger"></i> Tap the right side to continue</p>
+    </div>`);
+
+  // 2. Angka
+  slides.push(`
+    <div class="ws">
+      <p class="ws-kicker">In ${w.year}, I…</p>
+      <ul class="ws-stats">
+        <li><b>${yProjects.length}</b><span>${yProjects.length === 1 ? "project shipped" : "projects shipped"}</span></li>
+        <li><b>${yCerts.length}</b><span>${yCerts.length === 1 ? "certificate earned" : "certificates earned"}</span></li>
+        <li><b>${yMilestones.length}</b><span>${yMilestones.length === 1 ? "milestone reached" : "milestones reached"}</span></li>
+      </ul>
+    </div>`);
+
+  // 3. Top skill
+  if (topSkills.length) {
+    const [name, n] = topSkills[0];
+    slides.push(`
+      <div class="ws">
+        <p class="ws-kicker">My top skill was</p>
+        <h2 class="ws-huge ws-skill">${name}</h2>
+        <p class="ws-sub">Used in ${n} of ${plural(yProjects.length, "project")}</p>
+        <ol class="ws-rank" start="2">
+          ${topSkills.slice(1, 5).map(([t]) => `<li>${t}</li>`).join("")}
+        </ol>
+      </div>`);
+  }
+
+  // 4. Satu slide per project
+  yProjects.forEach((p, i) => {
+    slides.push(`
+      <div class="ws ws-project">
+        <p class="ws-kicker">Project ${i + 1} of ${yProjects.length}</p>
+        <div class="ws-cover" style="background:${p.color}">${coverHTML(p)}</div>
+        <h3 class="ws-title">${p.title}</h3>
+        <p class="ws-sub">${p.type || "Project"} · ${p.period || p.year}</p>
+        <div class="ws-chips">${p.tech.map((t) => `<span>${t}</span>`).join("")}</div>
+        <button class="ws-btn" data-open-project="${p.id}"><i class="ti ti-player-play-filled"></i> Open project</button>
+      </div>`);
+  });
+
+  // 5. Momen penting
+  if (yMilestones.length) {
+    slides.push(`
+      <div class="ws">
+        <p class="ws-kicker">Moments that mattered</p>
+        <ul class="ws-list">
+          ${yMilestones
+            .map(
+              (m) => `<li><i class="ti ${m.icon}"></i><div><b>${m.title}</b><span>${m.date} · ${m.text}</span></div></li>`
+            )
+            .join("")}
+        </ul>
+      </div>`);
+  }
+
+  // 6. Sertifikat
+  if (yCerts.length) {
+    slides.push(`
+      <div class="ws">
+        <p class="ws-kicker">Certificates collected</p>
+        <div class="ws-certs">
+          ${yCerts
+            .map(
+              (c) => `
+              <button class="ws-cert" data-open-cert="${c.index}">
+                <img src="${c.image}" alt="${c.title}" loading="lazy" onerror="this.remove()" />
+                <span>${c.title}</span>
+              </button>`
+            )
+            .join("")}
+        </div>
+      </div>`);
+  }
+
+  // 7. Ringkasan
+  slides.push(`
+    <div class="ws ws-summary">
+      <div class="ws-card">
+        <p class="ws-kicker">Edbert's ${w.year} Wrapped</p>
+        <h3 class="ws-title">${w.title}</h3>
+        <div class="ws-card-grid">
+          <div><span>Top skill</span><b>${topSkills.length ? topSkills[0][0] : "Learning"}</b></div>
+          <div><span>Projects</span><b>${yProjects.length}</b></div>
+          <div><span>Certificates</span><b>${yCerts.length}</b></div>
+          <div><span>Milestones</span><b>${yMilestones.length}</b></div>
+        </div>
+        ${
+          yProjects.length
+            ? `<p class="ws-card-list"><span>Releases</span>${yProjects.map((p) => p.title).join(" · ")}</p>`
+            : ""
+        }
+        <p class="ws-brand"><i class="ti ti-vinyl"></i> edbertify</p>
+      </div>
+      <div class="ws-actions">
+        <button class="ws-btn ghost" data-replay><i class="ti ti-reload"></i> Replay</button>
+        <button class="ws-btn" data-close-wrapped>Done</button>
+      </div>
+    </div>`);
+
+  return slides;
+}
+
+function showSlide(i) {
+  wIndex = Math.max(0, Math.min(i, wSlides.length - 1));
+  wrappedStage.innerHTML = wSlides[wIndex];
+  wrappedBars.innerHTML = wSlides
+    .map((_, k) => `<span class="${k < wIndex ? "done" : k === wIndex ? "on" : ""}"></span>`)
+    .join("");
+  document.getElementById("wPrev").disabled = wIndex === 0;
+  document.getElementById("wNext").disabled = wIndex === wSlides.length - 1;
+
+  wrappedStage.querySelectorAll("[data-open-project]").forEach((b) =>
+      b.addEventListener("click", () => {
+      openProject(b.dataset.openProject); // buka dulu, biar posisi Wrapped tersimpan
+      closeWrapped();
+    })
+  );
+  wrappedStage.querySelectorAll("[data-open-cert]").forEach((b) =>
+    b.addEventListener("click", () => openCert(Number(b.dataset.openCert)))
+  );
+  const replay = wrappedStage.querySelector("[data-replay]");
+  if (replay) replay.addEventListener("click", () => showSlide(0));
+  const done = wrappedStage.querySelector("[data-close-wrapped]");
+  if (done) done.addEventListener("click", closeWrapped);
+}
+
+function openWrapped(i) {
+  const w = wrappedYears[i];
+  wYear = i;
+  wSlides = buildSlides(w);
+  wrappedModal.style.setProperty("--c1", w.colors[0]);
+  wrappedModal.style.setProperty("--c2", w.colors[1]);
+  wrappedModal.classList.add("open");
+  wrappedModal.setAttribute("aria-hidden", "false");
+  showSlide(0);
+}
+
+function closeWrapped() {
+  wrappedModal.classList.remove("open");
+  wrappedModal.setAttribute("aria-hidden", "true");
+}
+
+document.querySelectorAll("[data-wrapped]").forEach((card) =>
+  card.addEventListener("click", () => openWrapped(Number(card.dataset.wrapped)))
+);
+document.getElementById("wPrev").addEventListener("click", () => showSlide(wIndex - 1));
+document.getElementById("wNext").addEventListener("click", () => showSlide(wIndex + 1));
+document.getElementById("wClose").addEventListener("click", closeWrapped);
+wrappedModal.addEventListener("click", (e) => { if (e.target === wrappedModal) closeWrapped(); });
+
+// Klik sisi kiri / kanan slide = mundur / maju (kecuali klik tombol)
+wrappedStage.addEventListener("click", (e) => {
+  if (e.target.closest("button, a")) return;
+  const r = wrappedStage.getBoundingClientRect();
+  showSlide(wIndex + (e.clientX - r.left < r.width * 0.3 ? -1 : 1));
+});
+
+// Swipe di HP
+let touchX = null;
+wrappedStage.addEventListener("touchstart", (e) => (touchX = e.touches[0].clientX), { passive: true });
+wrappedStage.addEventListener("touchend", (e) => {
+  if (touchX === null) return;
+  const dx = e.changedTouches[0].clientX - touchX;
+  if (Math.abs(dx) > 50) showSlide(wIndex + (dx < 0 ? 1 : -1));
+  touchX = null;
+});
+
+// Keyboard: panah kiri/kanan, Esc
+window.addEventListener("keydown", (e) => {
+  if (!wrappedModal.classList.contains("open")) return;
+  if (certModal.classList.contains("open")) return; // sertifikat sedang dibuka di atasnya
+  if (e.key === "ArrowRight") showSlide(wIndex + 1);
+  if (e.key === "ArrowLeft") showSlide(wIndex - 1);
+  if (e.key === "Escape") closeWrapped();
+}, true);

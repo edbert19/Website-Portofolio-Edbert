@@ -131,8 +131,24 @@
         </div>
       </section>
 
-      <!-- ========== JOURNEY (nanti diisi) ========== -->
-      <section class="view" data-view="journey"><div class="content placeholder"><h1>Journey</h1><p>Coming soon.</p></div></section>
+      <!-- ========== JOURNEY ========== -->
+      <section class="view" data-view="journey">
+        <div class="content journey">
+          <h1 class="page-title">Journey</h1>
+          <p class="page-sub">My story so far, from school to building real-world apps. Tap a Wrapped to replay the year.</p>
+
+          <h2 class="section-title">Your Wrapped</h2>
+          <div class="wrapped-row" id="wrappedRow"></div>
+
+          <h2 class="section-title">Listening history</h2>
+          <div class="tl-head">
+            <span>#</span><span></span><span>Title</span>
+            <span class="h-when">Date</span>
+            <span style="text-align:right"><i class="ti ti-clock"></i></span><span></span>
+          </div>
+          <div class="timeline" id="timeline"></div>
+        </div>
+      </section>
 
       <!-- ========== CONTACT ========== -->
       <section class="view" data-view="contact">
@@ -254,6 +270,17 @@
       <figcaption id="galleryCount"></figcaption>
     </figure>
     <button class="g-btn g-next" id="galleryNext" aria-label="Next photo"><i class="ti ti-chevron-right"></i></button>
+  </div>
+
+  <!-- ===== POP-UP WRAPPED (slider) ===== -->
+  <div class="wrapped-modal" id="wrappedModal" aria-hidden="true">
+    <div class="wrapped-box" role="dialog" aria-modal="true" aria-label="Wrapped">
+      <div class="w-bars" id="wrappedBars"></div>
+      <button class="w-close" id="wClose" aria-label="Close"><i class="ti ti-x"></i></button>
+      <button class="w-nav w-prev" id="wPrev" aria-label="Previous slide"><i class="ti ti-chevron-left"></i></button>
+      <div class="w-stage" id="wrappedStage"></div>
+      <button class="w-nav w-next" id="wNext" aria-label="Next slide"><i class="ti ti-chevron-right"></i></button>
+    </div>
   </div>
 
   <script src="gallery.js"></script>

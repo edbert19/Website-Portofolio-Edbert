@@ -43,15 +43,6 @@ window.GALLERY = {
     "img/cbt-akademis-ai/Role%20Management.png",
     "img/cbt-akademis-ai/Ujian%20CBT.png"
   ],
-  "certificates": [
-    "img/certificates/BUMI%20ARTA.png",
-    "img/certificates/gemini.png",
-    "img/certificates/ONE.png",
-    "img/certificates/oracle%20academy.png",
-    "img/certificates/Red%20Hat%20System%20Administration%20I%20(RH124%20-%20RHA)%20-%20Ver.%208.2.png",
-    "img/certificates/Red%20Hat%20System%20Administration%20I%20(RH124%20-%20RHA)%20-%20Ver.%209.3.png",
-    "img/certificates/revo-u.png"
-  ],
   "cosmo": [
     "img/cosmo/01%20Home%20Page.png",
     "img/cosmo/02%20Suggested%20Users.png",
