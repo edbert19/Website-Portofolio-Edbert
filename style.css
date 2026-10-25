@@ -976,3 +976,129 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   background: #ffffff;
   padding: 6px;
 }
+
+/* =====================================================
+   RESPONSIVE FIXES (HP & TABLET)
+   ===================================================== */
+/* Tinggi layar pas di HP (tidak ketutup address bar browser) */
+body, .app { height: 100vh; height: 100dvh; }
+.wrapped-box { height: min(740px, calc(100vh - 32px)); height: min(740px, calc(100dvh - 32px)); }
+html { -webkit-text-size-adjust: 100%; }
+* { -webkit-tap-highlight-color: transparent; }
+
+/* Judul halaman detail tidak keluar layar */
+.playlist-info { min-width: 0; }
+.playlist-info h1, .artist-info h1 { overflow-wrap: anywhere; }
+
+/* Tablet */
+@media (max-width: 1000px) {
+  .playlist-cover { width: 170px; height: 170px; font-size: 56px; }
+  .playlist-info h1 { font-size: clamp(36px, 6vw, 56px); letter-spacing: -1px; }
+  .avatar { width: 150px; height: 150px; font-size: 44px; }
+}
+
+/* Layar sentuh: matikan efek hover yang "nyangkut" setelah di-tap */
+@media (hover: none) {
+  .track:hover, .tl-row:hover, .card:hover, .artist:hover, .lib-item:hover { background: transparent; }
+  .tl-row.open { background: var(--card); }
+  .track:hover .num span { display: inline; }
+  .track:hover .num i { display: none; }
+  .wrapped-card:hover { transform: none; box-shadow: 0 10px 30px rgba(0, 0, 0, .35); }
+  .pill:hover, .ws-btn:hover, .ws-cert:hover, .play-big:hover { transform: none; }
+  .cert-card:hover .cert-cover img, .shot:hover img { transform: none; opacity: 1; }
+  .track:active, .card:active, .artist:active, .tl-row:active { background: var(--hover); }
+}
+
+/* HP */
+@media (max-width: 700px) {
+  .artist-info h1 { font-size: clamp(36px, 12vw, 56px); letter-spacing: -1px; }
+  .playlist-info h1 { font-size: clamp(32px, 10vw, 44px); }
+  .playlist-cover { width: 150px; height: 150px; font-size: 48px; }
+
+  /* Kartu skill playlist: tombol play tidak menutupi judul */
+  #playlists .card-play { width: 32px; height: 32px; font-size: 15px; right: 8px; bottom: 8px; }
+  .card-cover .cover-label { right: 46px; font-size: 16px; }
+
+  /* Daftar fitur project: teks tidak terpotong "..." */
+  .track.feature { align-items: start; }
+  .track.feature .track-name, .track.feature .track-tech { white-space: normal; }
+
+  /* Halaman skill playlist: "Used in" tetap tampil, di bawah nama skill */
+  .skill-row .num { grid-row: 1; grid-column: 1; }
+  .skill-row .track-main { grid-row: 1; grid-column: 2; }
+  .skill-row .track-year { grid-row: 1; grid-column: 3; }
+  .skill-row .used-in.hide-sm { display: block; grid-row: 2; grid-column: 2 / -1; font-size: 13px; margin-top: -6px; }
+
+  .about-stats .num { font-size: 26px; }
+  .modal { padding: 12px; }
+  .modal-close { top: 20px; right: 20px; }
+  .wrapped-box { height: calc(100vh - 32px); height: calc(100dvh - 32px); }
+  .mobile-nav a { padding: 2px 6px; }
+}
+
+/* HP kecil (iPhone SE, dll.) */
+@media (max-width: 360px) {
+  .content { padding: 16px 12px 28px; }
+  .grid { gap: 4px; }
+  .card { padding: 8px; }
+  .actions { gap: 10px; }
+  .pill { padding: 8px 14px; }
+  .ws { padding: 28px 20px 32px; }
+  .ws-huge { font-size: 64px; }
+  .ws-stats b { font-size: 52px; }
+  .mobile-nav a { font-size: 10px; }
+  .card-cover .cover-label { font-size: 14px; right: 42px; }
+}
+
+/* =====================================================
+   NAVBAR HP: tidak kepotong + mode landscape
+   ===================================================== */
+/* Ruang aman untuk "home bar" / notch iPhone */
+@media (max-width: 700px) {
+  .mobile-nav { padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
+}
+
+/* HP dalam posisi landscape (layar pendek) */
+@media (orientation: landscape) and (max-height: 500px) {
+  .app {
+    grid-template-columns: 190px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 6px;
+    padding: 6px max(6px, env(safe-area-inset-right)) 6px max(6px, env(safe-area-inset-left));
+  }
+  /* Sidebar tetap tampil, versi ringkas, bisa di-scroll */
+  .sidebar { display: flex; overflow-y: auto; }
+  .library { display: none; }
+  .panel { padding: 10px 8px; }
+  .logo { font-size: 17px; padding: 0 10px 8px; }
+  .logo i { font-size: 22px; }
+  .nav a { padding: 7px 10px; gap: 12px; font-size: 14px; }
+  .nav a i { font-size: 20px; }
+  .mobile-nav { display: none; }
+  .main { border-radius: 8px; }
+
+  /* Player bar ringkas */
+  .player { grid-column: 1 / -1; margin: 0; min-height: 52px; padding: 4px 8px; }
+  .np-cover { width: 40px; height: 40px; }
+
+  /* Header lebih pendek supaya konten cepat terlihat */
+  .artist-header { flex-direction: row; align-items: flex-end; padding: 28px 20px 16px; gap: 16px; }
+  .avatar { width: 100px; height: 100px; font-size: 32px; }
+  .artist-info h1 { font-size: clamp(30px, 6vw, 48px); margin: 4px 0 8px; }
+  .playlist-header { flex-direction: row; align-items: flex-end; padding: 52px 20px 16px; gap: 16px; }
+  .playlist-cover { width: 110px; height: 110px; font-size: 40px; }
+  .playlist-info h1 { font-size: clamp(28px, 5vw, 44px); }
+  .content { padding: 16px 20px 28px; }
+
+  /* Pop-up muat di layar pendek */
+  .wrapped-modal { padding: 8px; }
+  .wrapped-box { width: min(380px, 100%); height: calc(100vh - 16px); height: calc(100dvh - 16px); }
+  .ws { padding: 24px 48px 28px; }
+  .ws-huge { font-size: 56px; }
+  .ws-big { font-size: 28px; }
+  .ws-stats b { font-size: 44px; }
+  .ws-cover { width: 60%; }
+  .modal-box { max-height: 92vh; max-height: 92dvh; }
+  .modal-box img { max-height: 55vh; max-height: 55dvh; }
+  .g-figure img { max-height: 75vh; max-height: 75dvh; }
+}

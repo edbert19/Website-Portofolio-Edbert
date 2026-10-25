@@ -837,7 +837,7 @@ const journey = [
     start: "Aug 2024",
     end: null,
     icon: "ti-school",
-    logo: "img/journey/Untar.png",
+    logo: "img/journey/Untar.png", 
     color: "#8d1d2c",
     details:
       "Studying software engineering, databases, and web and mobile development. Built 5 team projects, published a paper in the JIKSI journal, and earned Red Hat and Oracle certifications along the way. Expected to graduate in 2028.",
