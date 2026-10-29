@@ -224,7 +224,38 @@ const playlists = [
 // Foto dokumentasi & cover dibuat otomatis oleh generate-gallery.js
 const GALLERY = window.GALLERY || {};
 const COVERS = window.COVERS || {};
+// ================= LOGO ASLI SKILL (Devicon) =================
+const DEVICON = "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons";
+const LOGOS = {
+  "HTML": "html5",
+  "CSS": "css3",
+  "JavaScript": "javascript",
+  "TypeScript": "typescript",
+  "React": "react",
+  "Next.js": "nextjs",
+  "Bootstrap": "bootstrap",
+  "PHP": "php",
+  "Laravel": "laravel",
+  "Node.js": "nodejs",
+  "MySQL": "mysql",
+  "PostgreSQL": "postgresql",
+  "Dart": "dart",
+  "Flutter": "flutter",
+  "Python": "python",
+  "Java": "java",
+  "C++": "cplusplus",
+  "Git": "git",
+  "Linux": "linux",
+  "Figma": "figma",
+  "Unity": "unity",
+};
 
+const skillLogo = (sk) => {
+  const slug = LOGOS[sk.name];
+  return slug
+    ? `<img class="skill-logo" src="${DEVICON}/${slug}/${slug}-original.svg" alt="${sk.name} logo" loading="lazy" onerror="this.remove()" />`
+    : "";
+};
 // ================= HELPER =================
 function formatTime(sec) {
   const m = Math.floor(sec / 60);
@@ -598,7 +629,7 @@ function openPlaylist(id, fromBack = false) {
           <div class="track skill-grid skill-row">
             <div class="num"><span>${k + 1}</span></div>
             <div class="track-main">
-              <div class="track-cover skill-icon" style="background:${pl.color}"><i class="ti ${sk.icon}"></i></div>
+              <div class="track-cover skill-icon" style="background:${pl.color}"><i class="ti ${sk.icon}"></i>${skillLogo(sk)}</div>
               <div style="min-width:0">
                 <p class="track-name">${sk.name}</p>
                 <p class="track-tech">${sk.type}</p>
